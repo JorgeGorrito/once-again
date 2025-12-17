@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1,
+    "question": "be",
+    "answer": "ser/estar",
+    "examples": [
+      {
+        "description": "Present: I am a teacher",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I was at home yesterday",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have been to Paris",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "question": "go",
+    "answer": "ir",
+    "examples": [
+      {
+        "description": "Present: I go to school every day",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I went to the store yesterday",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have gone to that restaurant before",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "question": "see",
+    "answer": "ver",
+    "examples": [
+      {
+        "description": "Present: I see a bird in the tree",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I saw a movie last night",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have seen that show already",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "question": "take",
+    "answer": "tomar/coger",
+    "examples": [
+      {
+        "description": "Present: I take the bus to work",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I took a picture of the sunset",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have taken my medicine",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "question": "do",
+    "answer": "hacer",
+    "examples": [
+      {
+        "description": "Present: I do my homework every day",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I did the laundry yesterday",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have done my best",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "question": "come",
+    "answer": "venir",
+    "examples": [
+      {
+        "description": "Present: She comes to class on time",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: He came to the party late",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: They have come a long way",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "question": "get",
+    "answer": "conseguir/obtener",
+    "examples": [
+      {
+        "description": "Present: I get up at 7 AM",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I got a new job last month",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have gotten better at Spanish",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "question": "make",
+    "answer": "hacer/fabricar",
+    "examples": [
+      {
+        "description": "Present: I make coffee every morning",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: She made a cake for my birthday",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: He has made many mistakes",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "question": "know",
+    "answer": "saber/conocer",
+    "examples": [
+      {
+        "description": "Present: I know the answer",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I knew him when we were children",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have known her for years",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "question": "think",
+    "answer": "pensar",
+    "examples": [
+      {
+        "description": "Present: I think it's a good idea",
+        "explanation": "Forma base del verbo en presente"
+      },
+      {
+        "description": "Past: I thought about you yesterday",
+        "explanation": "Pasado simple - forma irregular"
+      },
+      {
+        "description": "Past Participle: I have thought about this carefully",
+        "explanation": "Participio pasado - forma irregular"
+      }
+    ]
+  }
+]
