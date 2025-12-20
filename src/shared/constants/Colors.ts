@@ -10,8 +10,8 @@ export default {
   dark: {
     text: '#fff',
     primaryColor: '#fff',
-    secondaryColor: '#193150',
-    tertiaryColor: '#132740',
+    secondaryColor: '#132740',
+    tertiaryColor: '#193150',
     quaternaryColor: '#0e1e31',
     quinaryColor: '#081421',
   },
