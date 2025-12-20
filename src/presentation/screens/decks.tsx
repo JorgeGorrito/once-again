@@ -2,7 +2,10 @@ import { Dependencies } from "@/src/dependencies/types";
 import type { Deck as DeckType } from "@/src/domain/models/Deck";
 import { IDeckLoader } from "@/src/domain/repositories/IDeckLoader";
 import Deck from "@/src/presentation/components/Deck";
+import { useThemeColor } from "@/src/presentation/components/Themed";
+import { useDeckStore } from "@/src/presentation/hooks/useDeckStore";
 import { useDependencies } from "@/src/presentation/hooks/useDependencies";
+import { DeckStore } from "@/src/presentation/providers/DeckStoreProvider";
 import React from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 
@@ -34,37 +37,49 @@ const styles = StyleSheet.create({
 });
 
 export default function Decks() {
-    const dependecies : Dependencies = useDependencies();
-    const [decks, setDecks] = React.useState<DeckType[]>([]);
+    const dependencies : Dependencies = useDependencies();
+    const [decks, setDecks] = React.useState<Array<DeckType>>([]);
     const [loading, setLoading] = React.useState(true);
     const [refreshing, setRefreshing] = React.useState(false);
-    const loader: IDeckLoader = dependecies.deckLoader;
+    const deckStore : DeckStore = useDeckStore();
+    
+    const decksRemoteLoader: IDeckLoader = dependencies.decksRemoteLoader;
+    const loadingColor = useThemeColor({}, 'text');
 
-    const loadData = async () => {
+    const loadDecks = async () : Promise<void>=> {
         try {
-            const data = await loader.load();
-            setDecks(data);
+            const remoteDecks = await decksRemoteLoader.load();
+            const remoteDecksFiltered = remoteDecks.filter( remoteDeck => 
+                !deckStore.installed.decks.some( localDeck => localDeck.id === remoteDeck.id )
+            );
+            setDecks(remoteDecksFiltered.concat(deckStore.installed.decks));
         } catch (error) {
-            console.error('Error loading decks:', error);
+            console.error('Error loading decks:', error); // ToDo: manejar error adecuadamente
         } finally {
             setLoading(false);
             setRefreshing(false);
         }
     };
 
-    React.useEffect(() => {
-        loadData();
-    }, []);
-
-    const handleRefresh = () => {
-        setRefreshing(true);
-        loadData();
+    const handleRefresh = async () : Promise<void>=> {
+        loadDecks();
     };
+
+    const updateDeck = (id : string, updateData : Partial<DeckType>) => {
+        setDecks( prevDecks => prevDecks.map(deck => deck.id === id ? { ...deck, ...updateData } : deck) );
+    };
+
+    React.useEffect(() => {
+        // const l = new DeckLocalSaver();
+        // const f = async () => {await l.save([]);}
+        // f();
+        loadDecks();
+    }, []);
 
     if (loading) {
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#2f95dc" />
+                <ActivityIndicator size="large" color={loadingColor} />
                 <Text style={styles.emptyText}>Cargando mazos...</Text>
             </View>
         );
@@ -75,7 +90,7 @@ export default function Decks() {
             <FlatList
                 data={decks}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <Deck {...item} />}
+                renderItem={({ item }) => <Deck updateDeck={updateDeck} {...item} />}
                 contentContainerStyle={decks.length === 0 ? { flexGrow: 1 } : {}}
                 ListEmptyComponent={
                     <View style={styles.emptyContainer}>

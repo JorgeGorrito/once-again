@@ -1,10 +1,15 @@
 import { Dependencies } from "@/src/dependencies/types";
+import { Card } from "@/src/domain/models/Card";
 import type { Deck as DeckType } from "@/src/domain/models/Deck";
 import { ICardGetter } from "@/src/domain/repositories/ICardGetter";
+import { ICardSaver } from "@/src/domain/repositories/ICardSaver";
+import { IDeckSaver } from "@/src/domain/repositories/IDeckSaver";
 import InstallButton from "@/src/presentation/components/InstallButton";
 import InstalledIcon from "@/src/presentation/components/InstalledIcon";
 import { Text, View } from "@/src/presentation/components/Themed";
+import { useDeckStore } from "@/src/presentation/hooks/useDeckStore";
 import { useDependencies } from "@/src/presentation/hooks/useDependencies";
+import { DeckStore } from "@/src/presentation/providers/DeckStoreProvider";
 import colors from "@/src/shared/constants/Colors";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -24,12 +29,15 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "transparent",
         flexDirection: "row",
-        alignItems: "center",
         justifyContent: "space-around",
     },
     titleHeader: {
         fontWeight: "bold",
-        fontSize: 18,
+        fontSize: 16,
+        maxWidth: "65%",
+        flexWrap: "wrap",
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     textHeader: {
         fontSize: 18,
@@ -47,20 +55,30 @@ const styles = StyleSheet.create({
     body: {
         paddingTop: 15,
         paddingBottom: 20,
+    },
+    itemBody: {
+        backgroundColor: "transparent",
     }
 });
 
-export default function Deck({
-    id,
-    title,
-    description,
-    category,
-    isInstalled,
-}: DeckType): React.JSX.Element {
+interface DeckProps extends DeckType {
+    updateDeck : (id : string, updateData : Partial<DeckType>) => void;
+}
+
+export default function Deck(deck : DeckProps): React.JSX.Element {
     const dependencies : Dependencies = useDependencies();
-    const getter : ICardGetter = dependencies.cardGetter;
-    const downloadCards = React.useCallback(async () => {;
-        await getter.get(id);
+    const deckStore : DeckStore = useDeckStore();
+    const cardsRemoteGetter : ICardGetter = dependencies.cardsRemoteGetter;
+    const cardsLocalSaver : ICardSaver = dependencies.cardsLocalSaver;
+    const decksLocalSaver : IDeckSaver = dependencies.decksLocalSaver;
+
+    const downloadCards = React.useCallback(async () => {
+        const remoteCards : Array<Card> = await cardsRemoteGetter.get(deck.id);
+        await cardsLocalSaver.save(deck.id, remoteCards);
+
+        deckStore.installed.add({ ...deck, isInstalled: true });
+        await decksLocalSaver.save(deckStore.installed.decks);
+        deck.updateDeck(deck.id, { isInstalled: true });
     }, []);
 
     return (
@@ -76,9 +94,9 @@ export default function Deck({
             >
                 <View style={styles.itemHeader}>
                     <Text style={styles.titleHeader}>
-                        {title.toUpperCase()}
+                        {deck.title.toUpperCase()}
                     </Text>
-                    {isInstalled ? (
+                    {deck.isInstalled ? (
                         <InstalledIcon size={25} />
                     ) : (
                         <InstallButton onPress={downloadCards} />
@@ -86,7 +104,7 @@ export default function Deck({
                 </View>
                 <View style={styles.itemHeader}>
                     <Text style={styles.textCategory}>Categoría </Text>
-                    <Text style={styles.textCategory}>{category}</Text>
+                    <Text style={styles.textCategory}>{deck.category}</Text>
                 </View>
             </View>
             <View 
@@ -94,7 +112,9 @@ export default function Deck({
                 darkColor={colors.dark.tertiaryColor} 
                 style={styles.body}
             >
-                <Text style={styles.textBody}>{description}</Text>
+                <View style={styles.itemBody}>
+                    <Text style={styles.textBody}>{deck.description}</Text>
+                </View>
             </View>
         </View>
     );
