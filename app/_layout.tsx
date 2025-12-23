@@ -15,6 +15,8 @@ import { useColorScheme } from "@/src/presentation/hooks/useColorScheme";
 import { DeckStoreContextProvider } from "@/src/presentation/providers/DeckStoreProvider";
 import { DependenciesProvider } from "@/src/presentation/providers/DependenciesProvider";
 import DeckInstalledStore from "@/src/presentation/stores/DeckInstalledStore";
+import * as Notifications from 'expo-notifications';
+import { Platform } from "react-native";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -30,8 +32,37 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+    useEffect(() => {
+        // Configurar notificaciones al iniciar la app
+        const setupNotifications = async () => {
+            // Configurar handler para notificaciones en primer plano
+            Notifications.setNotificationHandler({
+                handleNotification: async () => ({
+                    shouldPlaySound: true,
+                    shouldSetBadge: false,
+                    shouldShowAlert: true,
+                    shouldShowBanner: true, // Añadir esta propiedad
+                    shouldShowList: true, // Añadir esta propiedad
+                }),
+            });
+            
+            // Configurar canal para Android
+            if (Platform.OS === 'android') {
+                await Notifications.setNotificationChannelAsync('default', {
+                    name: 'Notificaciones por defecto',
+                    importance: Notifications.AndroidImportance.MAX,
+                    vibrationPattern: [0, 250, 250, 250],
+                    lightColor: '#FF231F7C',
+                    sound: 'default',
+                });
+            }
+        };
+        
+        setupNotifications();
+    }, []);
+
     const [loaded, error] = useFonts({
-        SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+        SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
         ...FontAwesome.font,
     });
 
@@ -75,8 +106,8 @@ function RootLayoutNav() {
                             options={{ headerShown: false }}
                         />
                         <Stack.Screen
-                            name="modal"
-                            options={{ presentation: "modal" }}
+                            name="(modals)"
+                            options={{ presentation: "modal", headerShown: false, }}
                         />
                     </Stack>
                 </ThemeProvider>

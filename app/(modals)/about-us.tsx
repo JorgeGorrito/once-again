@@ -4,7 +4,7 @@ import { Platform, StyleSheet } from 'react-native';
 import EditScreenInfo from '@/src/presentation/components/EditScreenInfo';
 import { Text, View } from '@/src/presentation/components/Themed';
 
-export default function ModalScreen() {
+export default function AboutUsModal() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
